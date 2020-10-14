@@ -1,5 +1,5 @@
 FROM node:current-alpine
-COPY . /app
+COPY /node/. /app
 WORKDIR /app
 RUN npm install
 ENTRYPOINT ["npm", "start"]
