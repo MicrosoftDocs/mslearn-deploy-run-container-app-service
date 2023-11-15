@@ -5,6 +5,50 @@
 }
 
 <div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+    <h1 class="display-4">MSHA for Dedicated SKU</h1>
+    <p>This is a demo of accessing Azure Storage and Azure Cosmos DB.</p>
+    <div class="btn-group" style="width:100%; text-align:center;">
+        <button id="read-write-storage" asp-page-handler="Storage" style="width: 25%; margin: 10px auto; display: inline-block;">Read and Write Content Storage</button>
+        <button id="read-write-cosmos" asp-page-handler="Cosmos" style="width: 25%; margin: 10px auto; display: inline-block;">Read and Write Cosmos DB</button>
+    </div>
+    <div id="output-container" style="position: relative; width: 50%; height: 200px; margin: 0 auto; border: 1px solid black">
+        <div id="log-message" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: none">
+            <pre>@Model.LogMessage</pre>
+        </div>
+        <div id="loading-message" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: none">
+            <p>Please wait, we are processing your request...</p>
+        </div>
+    </div>
 </div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    // Add event listeners to the buttons
+    $("#read-write-storage").click(function () {
+        // Hide the log message and show the loading message
+        $("#log-message").hide();
+        $("#loading-message").show();
+
+        // Call the OnGetStorageAsync method
+        $.get("/Index?handler=Storage", function (data) {
+            // Update the log message and show it
+            $("#log-message").text(data);
+            $("#log-message").show();
+            $("#loading-message").hide();
+        });
+    });
+
+    $("#read-write-cosmos").click(function () {
+        // Hide the log message and show the loading message
+        $("#log-message").hide();
+        $("#loading-message").show();
+
+        // Call the OnGetCosmosAsync method
+        $.get("/Index?handler=Cosmos", function (data) {
+            // Update the log message and show it
+            $("#log-message").text(data);
+            $("#log-message").show();
+            $("#loading-message").hide();
+        });
+    });
+</script>
