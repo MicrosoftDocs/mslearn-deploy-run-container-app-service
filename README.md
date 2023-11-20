@@ -1,3 +1,17 @@
+# Quickstart
+
+1. `git clone https://github.com/cjk7989/mslearn-deploy-run-container-app-service.git`
+2. `cd mslearn-deploy-run-container-app-service/dotnet`
+3. `dotnet publish "SampleWeb/SampleWeb.csproj" -c Release -o src`
+4. `az acr login --name <RegistyName>`
+5. `docker build -t <RegistyName>.azurecr.io/mslearn-deploy-run-container-app-service:v1 .`
+6. `docker push <RegistyName>.azurecr.io/mslearn-deploy-run-container-app-service:v1`
+
+# Example
+
+- Example site: https://mslearn-hello-container.azurewebsites.net/
+
+- Basic image: jikunregistry01.azurecr.io/mslearn-deploy-run-container-app-service:v1
 
 # Contributing
 
