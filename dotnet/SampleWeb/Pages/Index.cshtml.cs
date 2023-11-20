@@ -106,7 +106,7 @@ namespace SampleWeb.Pages
                 }
 
                 // Write log to blob
-                string log = $"[{DateTime.Now}] This is a log message from {storageAddress}.\n";
+                string log = $"[{DateTime.Now}] This is a log message from {ViewData["Site"]}.\n";
                 await blobClient.UploadAsync(BinaryData.FromString(log), overwrite: true);
 
                 // Read log from blob
@@ -147,23 +147,23 @@ namespace SampleWeb.Pages
                 );
 
                 // Generate a random product Id
-                string productId = Guid.NewGuid().ToString();
+                string productId = "test";
 
                 // Create an item
-                Product product = new Product
+                Log tempLog = new Log
                 {
-                    Id = productId,
-                    Category = "Current Date",
-                    Date = $"[{DateTime.Now}] This is a log message from {cosmosEndpoint}\n."
+                    id = productId,
+                    Category = cosmosEndpoint,
+                    Date = $"[{DateTime.Now}] This is a log message from {Environment.GetEnvironmentVariable("WEBSITE_HOSTNAME")}\n."
                 };
 
                 // Insert to cosmosContainer
-                await cosmosContainer.CreateItemAsync(product, new PartitionKey(product.Category));
+                await cosmosContainer.UpsertItemAsync<Log>(tempLog);
 
                 // Read from cosmosContainer
-                Product result = await cosmosContainer.ReadItemAsync<Product>(productId, new PartitionKey(product.Category));
+                Log result = await cosmosContainer.ReadItemAsync<Log>(productId, new PartitionKey(tempLog.Category));
 
-                LogMessage = $"Created and read a new product: {result.Category}, {result.Date}\n";
+                LogMessage = $"Created and read a new log: {result.Category}, {result.Date}\n";
             }
             catch (Exception ex)
             {
@@ -174,9 +174,9 @@ namespace SampleWeb.Pages
         }
     }
 
-    public class Product
+    public class Log
     {
-        public string Id { get; set; }
+        public string id { get; set; }
         public string Category { get; set; }
         public string Date { get; set; }
     }
